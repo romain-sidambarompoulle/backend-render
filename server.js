@@ -4,10 +4,17 @@ const axios = require("axios");
 require("dotenv").config(); // Permet d'utiliser les variables d'environnement
 
 const app = express();
-app.use(cors()); // Autoriser les requêtes CORS
+
+// Si tu veux autoriser seulement localhost:5174 en dev, tu peux mettre :
+// app.use(cors({ origin: "http://localhost:5174" }));
+// Sinon, app.use(cors()) autorise *tout* domaine :
+app.use(cors());
+
+// Pour parser le JSON entrant
 app.use(express.json());
 
 // URL de ton Google Apps Script
+// (assure-toi de bien avoir déployé ton script en "Application Web" et autorisé l'accès)
 const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbxg7cjesH3luK9WDC0nTKddPlMzYlDPcn3gIsBifgmrGetEnkGmBa_or67shHK33wFmPQ/exec";
 
 // URL de l'API OpenAI
@@ -18,23 +25,28 @@ app.get("/", (req, res) => {
   res.json({ message: "🚀 Backend actif sur Render !" });
 });
 
-// 📌 **Route pour envoyer les données à Google Sheets**
+// 📌 **Route pour envoyer les données à Google Sheets (proxy vers Apps Script)**
 app.post("/submit-form", async (req, res) => {
   try {
-    console.log("📩 Données reçues :", req.body);
+    console.log("📩 Données reçues sur /submit-form :", req.body);
 
-    // Vérifier si les champs essentiels sont remplis
+    // Vérifier si les champs essentiels sont remplis (optionnel)
     if (!req.body.nom || !req.body.email) {
       return res.status(400).json({ success: false, message: "Le nom et l'email sont requis." });
     }
 
-    // Envoi des données à Google Sheets
+    // On transmet la requête au Script Apps Script
     const response = await axios.post(GOOGLE_SHEET_URL, req.body, {
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+      },
     });
 
     console.log("✅ Réponse de Google Sheets :", response.data);
-    res.json({ success: true, message: "Données envoyées à Google Sheets." });
+
+    // On renvoie la réponse brute du script Apps Script à notre front
+    // Ainsi, s’il renvoie { status: "success", message: "..." }, on le reçoit tel quel
+    res.json(response.data);
 
   } catch (error) {
     console.error("❌ Erreur lors de l'envoi à Google Sheets :", error.message);
