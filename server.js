@@ -8,7 +8,7 @@ app.use(cors()); // Autoriser les requêtes CORS
 app.use(express.json());
 
 // URL de ton Google Apps Script
-const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbyQsVb_eHTfDzMvTrkShXF4N8nnA3L1OtBWLw9j285LXyMTrXky3HV7qhxJ_zs6ORALXQ/exec";
+const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbwoCQS-H8JuCQiJo03uB2f7-IpcbFisNt83y7JlOkdkTt9IGZ4u-PS9-HV7tfH-1A14Lg/exec";
 
 // URL de l'API OpenAI
 const OPENAI_API_URL = "https://api.openai.com/v1/chat/completions";
