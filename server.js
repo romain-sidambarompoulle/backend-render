@@ -15,7 +15,7 @@ app.use(express.json());
 
 // URL de ton Google Apps Script
 // (assure-toi de bien avoir déployé ton script en "Application Web" et autorisé l'accès)
-const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbyRgj-BfUdkIG1yPbosWHQ03qzanvcx3vYCejnGWDU0nAgimpPRLjhcYsrTKqjvf3N18w/exec";
+const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbym-KHsH3vnglGF5kEWA-SWgCnANimqQP1WK37aTLeuZ6wAKgp7wj3CDn1gWU17mYRZ8w/exec";
 
 // URL de l'API OpenAI
 const OPENAI_API_URL = "https://api.openai.com/v1/chat/completions";
