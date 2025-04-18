@@ -183,7 +183,7 @@ app.post("/submit-form", csrfProtection, async (req, res) => {
         secure: process.env.NODE_ENV === 'production',
         maxAge: 30 * 60 * 1000, // 30 minutes
         path: '/',
-        sameSite: 'lax'
+        sameSite: 'none'
       });
       devLogger('✅ Cookie token défini avec succès'); // ✨ Utilisation de devLogger
     }
