@@ -62,7 +62,7 @@ router.post('/register', async (req, res) => {
       secure: process.env.NODE_ENV === 'production',
       maxAge: 30 * 60 * 1000, // 30 minutes en millisecondes
       path: '/',
-      sameSite: 'lax'
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
     });
     
     res.cookie('refreshToken', refreshToken, {
@@ -70,7 +70,7 @@ router.post('/register', async (req, res) => {
       secure: process.env.NODE_ENV === 'production',
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 jours en millisecondes
       path: '/',
-      sameSite: 'lax'
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
     });
 
     // Envoi de la réponse
@@ -128,7 +128,7 @@ router.post('/login', async (req, res) => {
       secure: process.env.NODE_ENV === 'production',
       maxAge: 30 * 60 * 1000, // 30 minutes en millisecondes
       path: '/',
-      sameSite: 'lax'
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
     });
     
     // Stocker le refresh token dans un cookie (longue durée)
@@ -137,7 +137,7 @@ router.post('/login', async (req, res) => {
       secure: process.env.NODE_ENV === 'production',
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 jours en millisecondes
       path: '/',
-      sameSite: 'lax'
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
     });
 
     // On renvoie uniquement les données utilisateur (pas le token)
@@ -196,7 +196,7 @@ router.post('/refresh', verifyRefreshToken, async (req, res) => {
       secure: process.env.NODE_ENV === 'production',
       maxAge: 30 * 60 * 1000, // 30 minutes en millisecondes
       path: '/',
-      sameSite: 'lax'
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
     });
     
     // Réponse succès
