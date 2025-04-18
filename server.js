@@ -90,7 +90,7 @@ app.use(cors({
   ] // Ajout des en-têtes de cache
 }));
 
-// 3. Ajouter le middleware CSRF après CORS
+// 3. Ajouter le middleware CSRF après CORS - MAIS NE PAS L'APPLIQUER GLOBALEMENT ICI
 const csrfProtection = csrf({
   cookie: {
     httpOnly: true,
@@ -99,11 +99,11 @@ const csrfProtection = csrf({
     maxAge: 7 * 24 * 60 * 60 * 1000 // 7 jours
   },
   // ✨ Ignorer automatiquement les méthodes non modificatrices
-  ignoreMethods: ['GET', 'HEAD', 'OPTIONS'], 
+  ignoreMethods: ['GET', 'HEAD', 'OPTIONS'],
 });
 
-// ✨ Appliquer la protection CSRF globalement ici, AVANT le logging et les routes spécifiques
-app.use(csrfProtection); 
+// ✨ Supprimer l'application globale de csrfProtection ici
+// app.use(csrfProtection);
 
 // 3. Middleware de logging après le parsing - UNIQUEMENT EN DEV
 if (process.env.NODE_ENV !== 'production') {
@@ -258,39 +258,42 @@ app.post("/chatbot", csrfProtection, async (req, res) => {
 });
 
 // 4. Route pour obtenir un token CSRF - Elle doit venir APRÈS app.use(csrfProtection)
+// ✨ SUPPRIMER l'ancienne route CSRF ici
+/*
 app.get('/api/csrf-token', (req, res) => { // csrfProtection est appliqué globalement
   devLogger('📝 GET /api/csrf-token - Génération d\'un nouveau token CSRF'); // ✨ Utilisation de devLogger
-  
+
   // Forcer un status 200 explicitement
   res.status(200);
-  
+
   // Ajouter des en-têtes pour éviter la mise en cache
   res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
   res.set('Pragma', 'no-cache');
   res.set('Expires', '0');
-  
+
   // Générer un ETag unique pour éviter le cache
   const uniqueETag = Math.random().toString(36).substring(2);
   res.set('ETag', uniqueETag);
   devLogger('📝 ETag généré:', uniqueETag); // ✨ Utilisation de devLogger
-  
+
   // Mettre à jour la date de modification à chaque appel
   res.set('Last-Modified', new Date().toUTCString());
-  
+
   // Générer un token CSRF
   const csrfToken = req.csrfToken();
   devLogger('📝 Token CSRF généré:', csrfToken); // ✨ Utilisation de devLogger
-  
+
   // Envoyer la réponse
-  const responseBody = { 
+  const responseBody = {
     csrfToken: csrfToken,
     timestamp: Date.now(),
     random: Math.random() // Garantit que le corps est toujours différent
   };
   devLogger('📝 Réponse complète:', responseBody); // ✨ Utilisation de devLogger
-  
+
   res.json(responseBody);
 });
+*/
 
 // 5. ✨ Supprimer les applications spécifiques et conditionnelles de csrfProtection
 // Note: ne pas l'appliquer aux routes qui reçoivent des requêtes d'API externes
@@ -311,7 +314,19 @@ app.use((req, res, next) => {
 });
 
 // Puis les routes
+// ✨ Monter Auth AVANT la protection CSRF
 app.use('/api/auth', authRoutes);
+
+// ✨ Ajouter la route pour obtenir le token CSRF ICI
+// ✨ Exécuter csrfProtection juste pour cette route
+app.get('/api/csrf-token', csrfProtection, (req, res) => {
+  // Note: La protection CSRF est maintenant appliquée à cette route elle-même.
+  // `req.csrfToken()` fonctionne comme avant.
+  res.json({ csrfToken: req.csrfToken() });
+});
+
+// ✨ Appliquer la protection CSRF pour TOUTES les routes suivantes
+app.use(csrfProtection);
 
 // Monter les routeurs admin (l'ordre spécifique vs général importe moins avec CSRF global)
 app.use('/api/admin/messages', internalMessagesAdminRoutes); // Gère /api/admin/messages/...
