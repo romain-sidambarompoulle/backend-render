@@ -117,7 +117,7 @@ router.post('/login', async (req, res) => {
     cookies.set(res, 'refreshToken', refreshToken, { maxAge: 7 * 24 * 60 * 60 * 1000 }); // 7 jours
 
     // On renvoie uniquement les données utilisateur (pas le token)
-    res.json({
+    return res.json({
       success: true,
       user: {
         email: user.email,
@@ -126,10 +126,6 @@ router.post('/login', async (req, res) => {
         role: user.role
       }
     });
-
-    // ✨ Utilisation du helper cookies.clear
-    cookies.clear(res, 'token');
-    cookies.clear(res, 'refreshToken');
 
   } catch (error) {
     console.error('Erreur:', error);
@@ -175,14 +171,10 @@ router.post('/refresh', verifyRefreshToken, async (req, res) => {
     cookies.set(res, 'token', newToken, { maxAge: 30 * 60 * 1000 }); // 30 minutes
     
     // Réponse succès
-    res.json({
+    return res.json({
       success: true,
       message: 'Token rafraîchi avec succès'
     });
-
-    // ✨ Utilisation du helper cookies.clear
-    cookies.clear(res, 'token');
-    cookies.clear(res, 'refreshToken');
 
   } catch (error) {
     console.error('Erreur lors du rafraîchissement du token:', error);
