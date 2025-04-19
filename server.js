@@ -19,6 +19,7 @@ const { createVisitorAccount } = require('./routes/auth');
 const educationRoutes = require('./routes/education');
 // Ajouter l'import pour csurf
 const csrf = require('csurf');
+const cookies = require('./utils/cookies'); // ✨ Import du helper cookies
 
 // ✨ Importer mailer et templates
 const { sendEmail } = require('./utils/mailer');
@@ -92,14 +93,8 @@ app.use(cors({
 
 // 3. Ajouter le middleware CSRF après CORS - MAIS NE PAS L'APPLIQUER GLOBALEMENT ICI
 const csrfProtection = csrf({
-  cookie: {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax',
-    maxAge: 7 * 24 * 60 * 60 * 1000 // 7 jours
-  },
-  // ✨ Ignorer automatiquement les méthodes non modificatrices
-  ignoreMethods: ['GET', 'HEAD', 'OPTIONS'],
+  // ✨ Utilisation des options par défaut de cookies.js + ajout de maxAge
+  cookie: { ...cookies.default, maxAge: 7 * 24 * 60 * 60 * 1000 } // 7 jours
 });
 
 // ✨ Supprimer l'application globale de csrfProtection ici
@@ -178,13 +173,8 @@ app.post("/submit-form", csrfProtection, async (req, res) => {
 
     // Si un autoLoginToken est présent, le stocker dans un cookie
     if (visitorAccount.autoLoginToken) {
-      res.cookie('token', visitorAccount.autoLoginToken, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        maxAge: 30 * 60 * 1000, // 30 minutes
-        path: '/',
-        sameSite: 'none'
-      });
+      // ✨ Utilisation du helper cookies.set
+      cookies.set(res, 'token', visitorAccount.autoLoginToken, { maxAge: 30 * 60 * 1000 }); // 30 minutes
       devLogger('✅ Cookie token défini avec succès'); // ✨ Utilisation de devLogger
     }
 

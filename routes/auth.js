@@ -10,6 +10,7 @@ const { RevokedToken } = require('../models/RevokedToken');
 const db = require('../db');
 const { sendEmail } = require('../utils/mailer');
 const { resetPasswordTemplate } = require('../utils/emailTemplates');
+const cookies = require('../utils/cookies'); // ✨ Import du helper cookies
 
 // Clé secrète pour JWT (à mettre dans .env plus tard)
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -57,21 +58,8 @@ router.post('/register', async (req, res) => {
     const refreshExpires = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 jours
 
     // Stocker les tokens dans des cookies
-    res.cookie('token', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      maxAge: 30 * 60 * 1000, // 30 minutes en millisecondes
-      path: '/',
-      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
-    });
-    
-    res.cookie('refreshToken', refreshToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 jours en millisecondes
-      path: '/',
-      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
-    });
+    cookies.set(res, 'token', token, { maxAge: 30 * 60 * 1000 }); // 30 minutes
+    cookies.set(res, 'refreshToken', refreshToken, { maxAge: 7 * 24 * 60 * 60 * 1000 }); // 7 jours
 
     // Envoi de la réponse
     res.status(201).json({
@@ -123,22 +111,10 @@ router.post('/login', async (req, res) => {
     const refreshExpires = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 jours
 
     // Stocker le token d'accès dans un cookie (courte durée)
-    res.cookie('token', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      maxAge: 30 * 60 * 1000, // 30 minutes en millisecondes
-      path: '/',
-      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
-    });
+    cookies.set(res, 'token', token, { maxAge: 30 * 60 * 1000 }); // 30 minutes
     
     // Stocker le refresh token dans un cookie (longue durée)
-    res.cookie('refreshToken', refreshToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 jours en millisecondes
-      path: '/',
-      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
-    });
+    cookies.set(res, 'refreshToken', refreshToken, { maxAge: 7 * 24 * 60 * 60 * 1000 }); // 7 jours
 
     // On renvoie uniquement les données utilisateur (pas le token)
     res.json({
@@ -150,6 +126,11 @@ router.post('/login', async (req, res) => {
         role: user.role
       }
     });
+
+    // ✨ Utilisation du helper cookies.clear
+    cookies.clear(res, 'token');
+    cookies.clear(res, 'refreshToken');
+
   } catch (error) {
     console.error('Erreur:', error);
     res.status(500).json({ message: 'Erreur lors de la connexion' });
@@ -174,8 +155,8 @@ router.post('/refresh', verifyRefreshToken, async (req, res) => {
         new Date(req.user.exp * 1000)
       );
       
-      res.clearCookie('token');
-      res.clearCookie('refreshToken');
+      cookies.clear(res, 'token');
+      cookies.clear(res, 'refreshToken');
       
       return res.status(401).json({
         success: false,
@@ -191,19 +172,18 @@ router.post('/refresh', verifyRefreshToken, async (req, res) => {
     );
     
     // Stocker le nouveau token dans un cookie
-    res.cookie('token', newToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      maxAge: 30 * 60 * 1000, // 30 minutes en millisecondes
-      path: '/',
-      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
-    });
+    cookies.set(res, 'token', newToken, { maxAge: 30 * 60 * 1000 }); // 30 minutes
     
     // Réponse succès
     res.json({
       success: true,
       message: 'Token rafraîchi avec succès'
     });
+
+    // ✨ Utilisation du helper cookies.clear
+    cookies.clear(res, 'token');
+    cookies.clear(res, 'refreshToken');
+
   } catch (error) {
     console.error('Erreur lors du rafraîchissement du token:', error);
     res.status(500).json({
@@ -337,8 +317,8 @@ router.post('/change-password', verifyToken, async (req, res) => {
     }
     
     // Effacer les cookies
-    res.clearCookie('token');
-    res.clearCookie('refreshToken');
+    cookies.clear(res, 'token');
+    cookies.clear(res, 'refreshToken');
     
     res.json({
       success: true,
@@ -394,8 +374,8 @@ router.post('/logout', async (req, res) => {
     }
     
     // Supprimer les cookies
-    res.clearCookie('token');
-    res.clearCookie('refreshToken');
+    cookies.clear(res, 'token');
+    cookies.clear(res, 'refreshToken');
     
     res.json({ message: 'Déconnexion réussie' });
   } catch (error) {

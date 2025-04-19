@@ -6,6 +6,7 @@ const db = require('../db');
 const bcrypt = require('bcryptjs');
 const { RevokedToken } = require('../models/RevokedToken');
 const jwt = require('jsonwebtoken');
+const cookies = require('../utils/cookies');
 
 console.log('Module admin.js chargé!');
 
@@ -533,8 +534,8 @@ router.put('/change-password', verifyToken, isAdmin, async (req, res) => {
     }
 
     // Effacer les cookies
-    res.clearCookie('token');
-    res.clearCookie('refreshToken');
+    cookies.clear(res, 'token');
+    cookies.clear(res, 'refreshToken');
 
     console.log(`✅ Mot de passe de l'administrateur ${adminEmail} modifié avec succès.`);
     res.json({
