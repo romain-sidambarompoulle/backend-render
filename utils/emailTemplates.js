@@ -60,12 +60,11 @@ function homeFormTemplate(data) {
    */
   function phoneAppointmentTemplate(data) {
     return `
-      <h1>Votre rendez-vous téléphonique ODIA est confirmé ✅</h1>
       <p>Bonjour ${data.userName},</p>
       <p>Votre rendez-vous téléphonique avec ODIA est confirmé.</p>
       <ul>
         <li>Date : ${data.date}</li>
-        <li>Heure : ${data.time}</li>
+        <li>Heure : connectez‑vous à votre espace personnel sur https://odia‑strategie.com afin de connaître l’heure exacte de votre rendez‑vous, automatiquement ajustée à votre fuseau horaire.</li>
       </ul>
       <p>Notre équipe est prête à échanger avec vous et répondre à vos questions.</p>
       
@@ -88,13 +87,12 @@ function homeFormTemplate(data) {
    */
   function strategyAppointmentTemplate(data) {
     return `
-      <h1>Votre rendez-vous stratégique ODIA est confirmé ✅</h1>
       <p>Bonjour ${data.userName},</p>
       <p>Excellente nouvelle ! Votre rendez-vous stratégique personnalisé avec ODIA est bien
       confirmé.</p>
       <ul>
         <li>Date : ${data.date}</li>
-        <li>Heure : ${data.time}</li>
+        <li>Heure : connectez‑vous à votre espace personnel sur https://odia‑strategie.com afin de connaître l’heure exacte de votre rendez‑vous, automatiquement ajustée à votre fuseau horaire.</li>
       </ul>
       <p>Lors de ce rendez-vous, vous pourrez clairement visualiser les différents choix qui s'offrent
       à vous, mesurer les économies réalisables, et imaginer ainsi la vie que vous pourriez avoir
@@ -119,7 +117,6 @@ function homeFormTemplate(data) {
    */
   function userFormTemplate(data) {
     return `
-      <h1>✅ Vos informations ont bien été reçues par ODIA</h1>
       <p>Bonjour ${data.userName},</p>
       
       <p>Nous vous confirmons que toutes vos informations nous sont bien parvenues.
@@ -169,7 +166,7 @@ function homeFormTemplate(data) {
       <p>Nous vous rappelons votre rendez-vous prévu :</p>
       <ul>
         <li>Date : ${data.date}</li>
-        <li>Heure : ${data.time}</li>
+        <li>Heure : connectez‑vous à votre espace personnel sur https://odia‑strategie.com afin de connaître l’heure exacte de votre rendez‑vous, automatiquement ajustée à votre fuseau horaire.</li>
       </ul>
       <p>Nous avons hâte de vous rencontrer !</p>
     `;
@@ -182,13 +179,12 @@ function homeFormTemplate(data) {
    */
   function appointmentReminderTemplate24h(data) {
     return `
-      <h1>⏳ Rappel : votre rendez-vous ODIA demain</h1>
       <p>Bonjour ${data.userName},</p>
       
       <p>Rappel de votre rendez-vous ODIA :</p>
       <ul>
         <li>Date : ${data.date}</li>
-        <li>Heure : ${data.time}</li>
+        <li>Heure : connectez‑vous à votre espace personnel sur https://odia‑strategie.com afin de connaître l’heure exacte de votre rendez‑vous, automatiquement ajustée à votre fuseau horaire.</li>
       </ul>
       
       <p>Toute l'équipe a soigneusement étudié les informations que vous nous avez transmises
@@ -215,13 +211,12 @@ function homeFormTemplate(data) {
    */
   function appointmentReminderTemplate2h(data) {
     return `
-      <h1>⏰ Votre rendez-vous ODIA commence dans 2 heures</h1>
       <p>Bonjour ${data.userName},</p>
       
       <p>Votre rendez-vous ODIA débute dans exactement 2 heures :</p>
       <ul>
         <li>Date : ${data.date}</li>
-        <li>Heure : ${data.time}</li>
+        <li>Heure : connectez‑vous à votre espace personnel sur https://odia‑strategie.com afin de connaître l’heure exacte de votre rendez‑vous, automatiquement ajustée à votre fuseau horaire.</li>
       </ul>
       
       <p>Nous avons hâte de vous retrouver et d'avancer ensemble.</p>
@@ -245,7 +240,6 @@ function homeFormTemplate(data) {
    */
   function userFormUpdateTemplate(data) {
     return `
-      <h1>Vos modifications ont été prises en compte ✏️</h1>
       <p>Bonjour ${data.userName},</p>
       
       <p>Nous vous confirmons que les modifications apportées à votre formulaire personnalisé ont

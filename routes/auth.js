@@ -412,7 +412,8 @@ router.post('/forgot-password', async (req, res) => {
     // 5. Construire l'URL de réinitialisation en utilisant la variable d'environnement
     // Assurez-vous que FRONTEND_BASE_URL est défini dans votre fichier .env (ou variables d'environnement serveur)
     // Exemple: FRONTEND_BASE_URL=http://localhost:5173 pour dev, FRONTEND_BASE_URL=https://votre-domaine.com pour prod
-    const frontendBaseUrl = process.env.FRONTEND_BASE_URL || 'http://localhost:5173'; // Fallback au cas où la variable n'est pas définie
+    const frontendBaseUrl =
+      process.env.FRONTEND_URL || process.env.FRONTEND_BASE_URL || 'http://localhost:5173'; // ✨ Modification ici pour utiliser FRONTEND_URL en priorité
     const resetUrl = `${frontendBaseUrl}/#/reset-password/${resetToken}`; // ✨ Modification ici pour utiliser la variable d'environnement
     console.log(`🔧 URL de réinitialisation générée : ${resetUrl}`); // Log pour vérifier
 

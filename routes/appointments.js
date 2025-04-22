@@ -111,10 +111,10 @@ router.post('/', verifyToken, async (req, res) => {
         
         if (rendezVousType === 'tel') {
           emailTemplate = phoneAppointmentTemplate(emailData);
-          emailSubject = 'Confirmation de votre rendez-vous téléphonique';
+          emailSubject = 'Votre rendez-vous téléphonique ODIA est confirmé ✅';
         } else if (rendezVousType === 'strat') {
           emailTemplate = strategyAppointmentTemplate(emailData);
-          emailSubject = 'Confirmation de votre rendez-vous stratégique';
+          emailSubject = 'Votre rendez-vous stratégique ODIA est confirmé ✅';
         }
         
         // Envoyer l'email si un template est défini

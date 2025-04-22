@@ -61,10 +61,10 @@ async function sendAppointmentReminders(hoursBeforeAppointment = 24) {
         
         if (hoursBeforeAppointment === 24) {
           reminderTemplate = appointmentReminderTemplate24h(emailData);
-          subjectPrefix = "Rappel (J-1)";
+          subjectPrefix = "⏳ Rappel : votre rendez-vous ODIA demain";
         } else if (hoursBeforeAppointment === 2) {
           reminderTemplate = appointmentReminderTemplate2h(emailData);
-          subjectPrefix = "Rappel urgent";
+          subjectPrefix = "⏰ Votre rendez-vous ODIA commence dans 2 heures";
         } else {
           // Fallback sur le template standard pour les autres délais
           reminderTemplate = appointmentReminderTemplate(emailData);

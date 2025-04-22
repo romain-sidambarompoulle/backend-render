@@ -143,7 +143,7 @@ router.post('/formulaire', verifyToken, async (req, res) => {
         // Envoyer l'email de confirmation
         await sendEmail(
           req.user.userId, 
-          'Votre formulaire a bien été créé',
+          '✅ Vos informations ont bien été reçues par ODIA',
           userFormTemplate(emailData)
         );
         
