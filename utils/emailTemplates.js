@@ -1,6 +1,8 @@
 // /backend-render/utils/emailTemplates.js
 // Ce fichier regroupe toutes les templates d'emails utilisées dans le projet.
 
+const SITE_URL = process.env.FRONTEND_URL || 'https://odia-strategie.com';
+
 /**
  * Template pour l'email envoyé après qu'un utilisateur remplit le formulaire "home"
  * @param {object} data - objet contenant les infos nécessaires (par ex: nom, email, contenu du formulaire)
@@ -64,7 +66,7 @@ function homeFormTemplate(data) {
       <p>Votre rendez-vous téléphonique avec ODIA est confirmé.</p>
       <ul>
         <li>Date : ${data.date}</li>
-        <li>Heure : connectez‑vous à votre espace personnel sur https://odia‑strategie.com afin de connaître l’heure exacte de votre rendez‑vous, automatiquement ajustée à votre fuseau horaire.</li>
+        <li>Heure : connectez‑vous à votre espace personnel sur <a href="${SITE_URL}" target="_blank" rel="noopener noreferrer">${SITE_URL}</a> afin de connaître l’heure exacte de votre rendez‑vous, automatiquement ajustée à votre fuseau horaire.</li>
       </ul>
       <p>Notre équipe est prête à échanger avec vous et répondre à vos questions.</p>
       
@@ -92,7 +94,7 @@ function homeFormTemplate(data) {
       confirmé.</p>
       <ul>
         <li>Date : ${data.date}</li>
-        <li>Heure : connectez‑vous à votre espace personnel sur https://odia‑strategie.com afin de connaître l’heure exacte de votre rendez‑vous, automatiquement ajustée à votre fuseau horaire.</li>
+        <li>Heure : connectez‑vous à votre espace personnel sur <a href="${SITE_URL}" target="_blank" rel="noopener noreferrer">${SITE_URL}</a> afin de connaître l’heure exacte de votre rendez‑vous, automatiquement ajustée à votre fuseau horaire.</li>
       </ul>
       <p>Lors de ce rendez-vous, vous pourrez clairement visualiser les différents choix qui s'offrent
       à vous, mesurer les économies réalisables, et imaginer ainsi la vie que vous pourriez avoir
@@ -166,7 +168,7 @@ function homeFormTemplate(data) {
       <p>Nous vous rappelons votre rendez-vous prévu :</p>
       <ul>
         <li>Date : ${data.date}</li>
-        <li>Heure : connectez‑vous à votre espace personnel sur https://odia‑strategie.com afin de connaître l’heure exacte de votre rendez‑vous, automatiquement ajustée à votre fuseau horaire.</li>
+        <li>Heure : connectez‑vous à votre espace personnel sur <a href="${SITE_URL}" target="_blank" rel="noopener noreferrer">${SITE_URL}</a> afin de connaître l’heure exacte de votre rendez‑vous, automatiquement ajustée à votre fuseau horaire.</li>
       </ul>
       <p>Nous avons hâte de vous rencontrer !</p>
     `;
@@ -184,7 +186,7 @@ function homeFormTemplate(data) {
       <p>Rappel de votre rendez-vous ODIA :</p>
       <ul>
         <li>Date : ${data.date}</li>
-        <li>Heure : connectez‑vous à votre espace personnel sur https://odia‑strategie.com afin de connaître l’heure exacte de votre rendez‑vous, automatiquement ajustée à votre fuseau horaire.</li>
+        <li>Heure : connectez‑vous à votre espace personnel sur <a href="${SITE_URL}" target="_blank" rel="noopener noreferrer">${SITE_URL}</a> afin de connaître l’heure exacte de votre rendez‑vous, automatiquement ajustée à votre fuseau horaire.</li>
       </ul>
       
       <p>Toute l'équipe a soigneusement étudié les informations que vous nous avez transmises
@@ -216,7 +218,7 @@ function homeFormTemplate(data) {
       <p>Votre rendez-vous ODIA débute dans exactement 2 heures :</p>
       <ul>
         <li>Date : ${data.date}</li>
-        <li>Heure : connectez‑vous à votre espace personnel sur https://odia‑strategie.com afin de connaître l’heure exacte de votre rendez‑vous, automatiquement ajustée à votre fuseau horaire.</li>
+        <li>Heure : connectez‑vous à votre espace personnel sur <a href="${SITE_URL}" target="_blank" rel="noopener noreferrer">${SITE_URL}</a> afin de connaître l’heure exacte de votre rendez‑vous, automatiquement ajustée à votre fuseau horaire.</li>
       </ul>
       
       <p>Nous avons hâte de vous retrouver et d'avancer ensemble.</p>
@@ -298,7 +300,7 @@ function homeFormTemplate(data) {
       <p>Nous remarquons que vous n'avez pas encore consulté ${data.messageCount > 1 ? `les ${data.messageCount} messages` : `un message`} que nous vous avons envoyé${plural} il y a plus de 48 heures sur votre espace personnel ODIA.</p>
       <p>Ces messages peuvent contenir des informations importantes concernant votre accompagnement ou des étapes clés de votre parcours avec nous.</p>
       <p>Connectez-vous dès maintenant à votre espace pour consulter vos messages et rester informé :</p>
-      <p><a href="${process.env.FRONTEND_URL || 'https://odia-strategie.com/'}" target="_blank">Accéder à mon espace ODIA</a></p> {/* Adaptez l'URL si nécessaire */}
+      <p><a href="${SITE_URL}" target="_blank" rel="noopener noreferrer">Accéder à mon espace ODIA</a></p>
       <p>Si vous rencontrez des difficultés pour vous connecter ou si vous avez des questions, n'hésitez pas à nous contacter.</p>
       <p>À bientôt,<br>
       L'équipe ODIA</p>
