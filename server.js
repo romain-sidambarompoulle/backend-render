@@ -42,6 +42,9 @@ const internalMessagesAdminRoutes = require('./routes/admin/internalMessagesAdmi
 // ✨ Importer le nouveau routeur pour les messages chat admin
 const chatMessagesAdminRoutes = require('./routes/admin/chatMessagesAdmin');
 
+// ✨ Importer le nouveau routeur pour les leads
+const studentLeadsRoutes = require('./routes/studentLeads');
+
 // ✨ Logger visible uniquement hors production
 const devLogger = (...args) => {
   if (process.env.NODE_ENV !== 'production') {
@@ -364,6 +367,9 @@ app.get('/api/simulateur/:type', async (req, res) => {
     });
   }
 });
+
+// ✨ Montage de la route pour les leads
+app.use('/api/student-leads', studentLeadsRoutes);
 
 // Lancer le serveur
 const PORT = process.env.PORT || 3000;
