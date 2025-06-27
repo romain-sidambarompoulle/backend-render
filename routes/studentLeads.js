@@ -26,4 +26,29 @@ router.post('/', async (req, res) => {
   }
 });
 
+// GET /api/student-leads  ➜  liste complète des inscrits
+router.get('/', async (_req, res) => {
+  try {
+    const { rows } = await db.query(
+      'SELECT id, first_name, last_name, school, region, email, created_at FROM public.student_leads ORDER BY created_at DESC'
+    );
+    res.json({ success: true, data: rows });
+  } catch (error) {
+    console.error('Erreur récupération leads:', error);
+    res.status(500).json({ success: false, message: 'Erreur serveur' });
+  }
+});
+
+// DELETE /api/student-leads/:id  ➜  suppression d'un inscrit
+router.delete('/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    await db.query('DELETE FROM public.student_leads WHERE id = $1', [id]);
+    res.json({ success: true, message: 'Lead supprimé' });
+  } catch (error) {
+    console.error('Erreur suppression lead:', error);
+    res.status(500).json({ success: false, message: 'Erreur serveur' });
+  }
+});
+
 module.exports = router;
